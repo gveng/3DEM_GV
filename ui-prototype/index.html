@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FEM EM Studio - UI Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">FEM EM Studio</div>
+      <nav class="top-actions">
+        <button>New</button>
+        <button>Open</button>
+        <button>Save</button>
+        <span class="divider"></span>
+        <button>Undo</button>
+        <button>Redo</button>
+        <span class="divider"></span>
+        <button id="hide-btn" disabled>Hide</button>
+        <button id="show-btn" disabled>Show</button>
+        <span class="divider"></span>
+        <button class="accent">Precheck</button>
+        <button class="run">Solve</button>
+      </nav>
+    </header>
+
+    <main class="workspace">
+      <aside class="panel left">
+        <section class="card">
+          <h2>Project Tree</h2>
+          <ul class="tree">
+            <li class="node">Design_01</li>
+            <li class="group-label" data-material-group="Copper">Material: Copper</li>
+            <li class="node active" data-target="microstrip" data-object="true">Geometry / MicrostripLine</li>
+            <li class="node" data-target="gnd" data-object="true">Geometry / GroundPlane</li>
+            <li class="group-label" data-material-group="FR4">Material: FR4</li>
+            <li class="node" data-target="substrate" data-object="true">Geometry / SubstrateBlock</li>
+            <li class="group-label" data-material-group="Air">Material: Air</li>
+            <li class="node" data-target="airbox" data-object="true">Geometry / AirBox</li>
+            <li class="group-label">Simulation Setup</li>
+            <li class="node" data-target="port1">Ports / P1</li>
+            <li class="node" data-target="setup">Setups / Setup_FreqSweep</li>
+            <li class="node">Results / (empty)</li>
+          </ul>
+        </section>
+        <section class="card">
+          <h2>Materials</h2>
+          <div class="field">
+            <label>Assigned Material</label>
+            <select>
+              <option>Copper</option>
+              <option>FR4</option>
+              <option>Air</option>
+            </select>
+          </div>
+          <div class="grid two">
+            <div class="field">
+              <label>epsilon_r</label>
+              <input value="4.2">
+            </div>
+            <div class="field">
+              <label>tan_delta</label>
+              <input value="0.02">
+            </div>
+          </div>
+          <div class="grid two">
+            <div class="field">
+              <label>sigma [S/m]</label>
+              <input value="5.8e7">
+            </div>
+            <div class="field">
+              <label>mu_r</label>
+              <input value="1">
+            </div>
+          </div>
+        </section>
+      </aside>
+
+      <section class="viewport-wrap">
+        <div class="viewport-toolbar">
+          <button>Select</button>
+          <button>Move</button>
+          <button>Rotate</button>
+          <button>Scale</button>
+          <span class="divider"></span>
+          <button>XY</button>
+          <button>YZ</button>
+          <button>XZ</button>
+        </div>
+        <div class="viewport">
+          <div class="scene-objects" id="scene-objects">
+            <button class="scene-object selected" data-target="microstrip">MicrostripLine</button>
+            <button class="scene-object" data-target="gnd">GroundPlane</button>
+            <button class="scene-object" data-target="substrate">SubstrateBlock</button>
+            <button class="scene-object" data-target="airbox">AirBox</button>
+          </div>
+          <div class="hud top-left">3D Viewport</div>
+          <div class="hud top-right">Full-wave Frequency Domain</div>
+          <div class="hud bottom-left">Units: mm | f-range: 1 GHz - 8 GHz</div>
+          <div class="hud bottom-right" id="selection-hud">Selection: MicrostripLine (Visible)</div>
+        </div>
+      </section>
+
+      <aside class="panel right">
+        <section class="card" id="inspector-card">
+          <h2>Inspector</h2>
+          <div class="field">
+            <label>Object Name</label>
+            <input id="obj-name" value="MicrostripLine">
+          </div>
+          <div class="grid three">
+            <div class="field"><label>X</label><input id="obj-x" value="0"></div>
+            <div class="field"><label>Y</label><input id="obj-y" value="0"></div>
+            <div class="field"><label>Z</label><input id="obj-z" value="0"></div>
+          </div>
+          <div class="grid three">
+            <div class="field"><label>W</label><input id="obj-w" value="1.20"></div>
+            <div class="field"><label>H</label><input id="obj-h" value="0.035"></div>
+            <div class="field"><label>L</label><input id="obj-l" value="28"></div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Variables</h2>
+          <div class="field"><label>W_line</label><input value="1.20 mm"></div>
+          <div class="field"><label>H_sub</label><input value="0.80 mm"></div>
+          <div class="field"><label>fmin</label><input value="1 GHz"></div>
+          <div class="field"><label>fmax</label><input value="8 GHz"></div>
+        </section>
+      </aside>
+    </main>
+
+    <footer class="bottom-dock">
+      <div class="tabs">
+        <button class="tab active" data-tab="analysis">Analysis Setup</button>
+        <button class="tab" data-tab="ports">Ports</button>
+        <button class="tab" data-tab="validation">Validation Console</button>
+        <button class="tab" data-tab="jobs">Simulation Monitor</button>
+      </div>
+
+      <section class="tab-panel active" id="analysis">
+        <div class="grid four">
+          <div class="field"><label>fmin</label><input value="1 GHz"></div>
+          <div class="field"><label>fmax</label><input value="8 GHz"></div>
+          <div class="field"><label>Sweep Type</label><select><option>Linear</option><option>Adaptive</option></select></div>
+          <div class="field"><label>Step / Tol</label><input value="100 MHz"></div>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="ports">
+        <div class="grid four">
+          <div class="field required"><label>Port Name</label><input id="port-name" placeholder="P1" value="P1"></div>
+          <div class="field required"><label>Impedance [ohm]</label><input id="port-z" placeholder="50" value="50"></div>
+          <div class="field"><label>Port Type</label><select><option>Wave</option><option>Lumped</option><option>Coax</option><option>Differential</option></select></div>
+          <div class="field"><label>Target Face</label><input value="face:12345"></div>
+        </div>
+        <p id="port-message" class="ok">Port definition valid.</p>
+      </section>
+
+      <section class="tab-panel" id="validation">
+        <ul class="console">
+          <li class="ok">OK: Project units are coherent.</li>
+          <li class="warn">Warning: Sweep range is wide; runtime may increase.</li>
+          <li class="ok">OK: All conductive objects have materials.</li>
+        </ul>
+      </section>
+
+      <section class="tab-panel" id="jobs">
+        <div class="job-row"><span>Setup_FreqSweep</span><span>Idle</span><span>0%</span></div>
+        <div class="progress"><div style="width: 0%"></div></div>
+      </section>
+    </footer>
+  </div>
+
+  <div class="materials-popup hidden" id="materials-popup" role="dialog" aria-modal="false" aria-label="Material Window">
+    <div class="popup-header">
+      <strong>Material Window</strong>
+      <button id="popup-close" type="button">Close</button>
+    </div>
+    <p class="popup-subtitle">Selected objects</p>
+    <ul id="popup-selected-list" class="popup-list"></ul>
+    <div class="field">
+      <label>Assign Material</label>
+      <select id="popup-material">
+        <option>Copper</option>
+        <option>FR4</option>
+        <option>Air</option>
+      </select>
+    </div>
+    <button id="popup-apply" type="button" class="accent">Apply Material</button>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
