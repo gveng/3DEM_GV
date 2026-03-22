@@ -1,0 +1,26 @@
+# Build outputs
+build/
+**/build/
+
+# CMake / Ninja artifacts
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
+build.ninja
+.ninja_deps
+.ninja_log
+
+# Qt generated files
+*.autogen/
+*_autogen/
+*.qm
+
+# Logs and temp files
+*.log
+*.tmp
+
+# IDE/system
+.vscode/
+.DS_Store
+Thumbs.db

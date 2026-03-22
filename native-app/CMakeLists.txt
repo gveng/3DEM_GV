@@ -24,7 +24,3 @@ target_link_libraries(FemEmStudio PRIVATE
     Qt6::Widgets
     Qt6::OpenGLWidgets
 )
-
-target_compile_definitions(FemEmStudio PRIVATE
-    QT_NO_KEYWORDS
-)
